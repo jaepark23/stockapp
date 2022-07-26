@@ -1,3 +1,3 @@
-# realstockapp
+# stockapp
 
 stock simulator dev
