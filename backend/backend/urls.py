@@ -11,13 +11,9 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-# registers /shares as a way to view all the shares from /api/shares
 
 urlpatterns = [
-    path('', views.getRoutes),
-    path('shares/', views.getShares),
-    path('token/', MyTokenObtainPairView.as_view(), name = 'token_obtain_pair'),
-    path('token/refresh', TokenRefreshView.as_view(), name = 'token_refresh'),
     path('admin/', admin.site.urls),
+    path('api/', include('stockapp.urls')),
     path('data/<str:ticker>', views.GetData.as_view()),
 ]

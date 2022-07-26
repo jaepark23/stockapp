@@ -1,7 +1,7 @@
-# serializers convert data from python to data that is readable by javascript and other frontend stuff 
+# serializers convert data from python to data that is readable by javascript and other frontend stuff
 
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from .models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.validators import UniqueValidator
@@ -10,6 +10,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import get_user_model
+
 
 class ShareSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,9 +25,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['username'] = user.username
         token['email'] = user.email
-        
+
         return token
-    
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -34,7 +36,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2')
+        fields = ('username', 'password', 'password2', 'balance')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -49,7 +51,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
 
         user.set_password(validated_data['password'])
+        user.balance = validated_data['balance']
         user.save()
 
         return user
-
