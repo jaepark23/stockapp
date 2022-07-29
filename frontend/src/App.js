@@ -9,7 +9,7 @@ import HomePage from "./pages/HomePage";
 import PrivateRoute from "./components/PrivateRoute";
 import RegisterPage from "./pages/RegisterPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
+import TradePage from "./pages/TradePage"
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -20,6 +20,7 @@ function App() {
           <Route element={<HomePage />} path="/" />
           <Route element={<RegisterPage />} path="/register" />
           <Route element={<LoginPage />} path="/login" />
+          <Route element = {<TradePage />} path = "/trade" />
         </Routes>
       </AuthProvider>
     </Router>

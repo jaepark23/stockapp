@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import MyTokenObtainPairView, RegisterView, buyShares, sellShares, getBalance
+from .views import MyTokenObtainPairView, RegisterView, buyShares, sellShares, getAccount, getHistory
 
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -11,7 +11,8 @@ urlpatterns = [
     path('shares/', views.getShares),
     path('shares/buy/<str:ticker>/<int:count>', views.buyShares),
     path('shares/sell/<str:ticker>/<int:count>', views.sellShares),
-    path('account', views.getBalance),
+    path('account', views.getAccount),
+    path('account/history', views.getHistory),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/register/', RegisterView.as_view(), name='token_register')

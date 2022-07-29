@@ -12,19 +12,10 @@ function SideBar() {
     <div className="nav flex-column flex-nowrap vh-100 overflow-auto text-white p-2">
       <h3> Stock Simulator </h3>
       <li className="nav-item">
-        <a href="#" className="nav-link">
-          <span>Home</span>
-        </a>
+        <Link to="/"> Home </Link>
       </li>
       <li className="nav-item">
-        <a href="#submenu1" className="nav-link">
-          <span>Order History</span>
-        </a>
-      </li>
-      <li className="nav-item">
-        <a href="#" className="nav-link">
-          <span>NAV 1</span>
-        </a>
+        <Link to="/trade"> Trade </Link>
       </li>
       <li className="nav-item">
         <Link to="/register"> Register </Link>

@@ -9,7 +9,7 @@ class StockAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(admin.ModelAdmin):
-    fields = ('username', 'email', 'balance')
+    fields = ('username', 'email', 'balance', 'order_history')
 
 
 admin.site.register(User, UserAdmin)

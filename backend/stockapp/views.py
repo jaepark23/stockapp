@@ -15,6 +15,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
+from datetime import datetime
 import requests
 import time
 # Create your views here.
@@ -48,6 +49,14 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
+def historyHelper(user, ticker, count, buy):
+    order_history = user.order_history
+    if user.order_history == None:
+        pass
+    else:
+        now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        price = requests.get("https://finnhub.io/api/v1/quote?symbol=%s&token=cb6avbiad3i70tu62u4g" % (ticker.upper())).json()['c']
+        order_history[now] = {"ticker": ticker, "count": count, "price" : price, "buy" : buy}
 
 @api_view(['POST'])
 def buyShares(request, ticker, count):
@@ -59,6 +68,7 @@ def buyShares(request, ticker, count):
         Share.objects.create(user=user, ticker=ticker, count=count)
         print('success')
         user.balance = user.balance - cost
+        historyHelper(user, ticker, count, True)
         user.save()
         return Response(user.balance)
     else:
@@ -69,6 +79,7 @@ def buyShares(request, ticker, count):
 def sellShares(request, ticker, count):
     user = request.user
     shares = user.share_set.all()
+ 
     id = shares.filter(ticker__exact=ticker.upper())[0].id
     shares = Share.objects.get(id=id)
     call = requests.get(
@@ -83,11 +94,13 @@ def sellShares(request, ticker, count):
     if shares.count <= 0:
         shares.delete()
         user.balance = user.balance + cost
+        historyHelper(user, ticker, count, False)
         user.save()
         return Response(user.balance)
     else:
         shares.save(update_fields=['count'])
         user.balance = user.balance + cost
+        historyHelper(user, ticker, count, False)
         user.save()
         return Response(user.balance)
 
@@ -103,9 +116,15 @@ def getRoutes(request):
 
 
 @api_view(['GET'])
-def getBalance(request):
+def getAccount(request):
     user = request.user
     return Response({
         'username': user.username,
         'balance': user.balance,
+        'order_history' : user.order_history
     })
+
+@api_view(['GET'])
+def getHistory(request):
+    user = request.user
+    return Response(user.order_history)

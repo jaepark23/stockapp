@@ -14,11 +14,12 @@ function Portfolio({}) {
   }
 
   return (
-    <div className="col-md-7 border">
-      <h2>
-        {" "}
-        ${balance} ${spendingBalance}
-      </h2>
+    <div className="col-md-7">
+      <div className="card border-primary mb-3">
+      <div class="card-header"> 
+        <h3> Portfolio </h3>
+        {/* <h3> ${balance} ${spendingBalance} </h3> */}
+      </div>
       <div className="table-wrapper">
         <table className="table">
           <thead>
@@ -40,6 +41,7 @@ function Portfolio({}) {
               ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   );

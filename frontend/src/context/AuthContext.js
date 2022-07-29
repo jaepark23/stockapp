@@ -48,7 +48,15 @@ export const AuthProvider = ({ children }) => {
       alert("Something went wrong");
     }
   };
+  let handleTrade = (e) => {
+    e.preventDefault()
+    if(e.target.trade[0].checked) {
+      buyShare(e);
+    } else {
+      sellShare(e)
 
+    }
+  }
   let logoutUser = () => {
     setAuthTokens(null);
     setUser(null);
@@ -126,6 +134,7 @@ export const AuthProvider = ({ children }) => {
         },
       }
     );
+    console.log('works')
     let data = await response.json();
     getShares(); //update shares upon purchase of share
     setSpendingBalance(data); 
@@ -187,6 +196,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  let getHistory = async () => {
+    let response = await fetch("http://127.0.0.1:8000/api/account/history",{
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + String(authTokens.access),
+    },
+  });
+    let data = await response.json();
+    return data;
+}
+
   let contextData = {
     user: user,
     authTokens: authTokens,
@@ -199,6 +220,8 @@ export const AuthProvider = ({ children }) => {
     registerUser: registerUser,
     sellShare: sellShare,
     buyShare: buyShare,
+    getHistory: getHistory,
+    handleTrade: handleTrade
   };
   // refresh token every 4 minutes
   useEffect(() => {

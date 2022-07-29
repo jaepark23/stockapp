@@ -3,7 +3,7 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Chart } from "react-chartjs-2";
 import axios from "axios";
-
+import moment from 'moment'
 //https://finnhub.io/api/v1/stock/candle?symbol=META&resolution=60&from=1657950323&to=1658036723&token=cb6avbiad3i70tu62u4g
 function Graph({ ticker }) {
   const [xValues, setXValues] = useState("");
@@ -13,21 +13,26 @@ function Graph({ ticker }) {
     var dates = [];
     for (var u of unix) {
       var date = new Date(u * 1000);
-      dates.push(date);
+      dates.push(moment.unix(u).format("h:mm a"))
     }
     setXValues(dates);
   }
   const options = {
     scales: {
       "x-axis-1": {
-        display: false,
+        display: true,
         gridLines: {
-          display: false,
+          display: true,
         },
+        ticks: {
+          font: {
+            size: 8,
+          }
+        }
       },
       "y-axis-1": {
         type: "linear",
-        display: false,
+        display: true,
         position: "left",
       },
     },
@@ -37,18 +42,14 @@ function Graph({ ticker }) {
       },
     },
     maintainAspectRatio: true,
-    events: [],
-    elements: {
-      point: {
-        radius: 0,
-      },
-    },
+    responsive: true
+
   };
   var data = {
     labels: xValues,
     datasets: [
       {
-        label: "First dataset",
+        label: ticker,
         data: yValues,
         fill: true,
         backgroundColor: "rgba(75,192,192,0.2)",
@@ -74,12 +75,7 @@ function Graph({ ticker }) {
 
   return (
     <div
-      style={{
-        width: "40%",
-        height: "2vh",
-        position: "relative",
-        marginBottom: "5%",
-      }}
+
     >
       {" "}
       <Line options={options} data={data} />{" "}
