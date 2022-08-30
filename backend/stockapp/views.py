@@ -52,7 +52,10 @@ class RegisterView(generics.CreateAPIView):
 def historyHelper(user, ticker, count, buy):
     order_history = user.order_history
     if user.order_history == None:
-        pass
+        now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        price = requests.get("https://finnhub.io/api/v1/quote?symbol=%s&token=cb6avbiad3i70tu62u4g" % (ticker.upper())).json()['c']
+        user.order_history = {"ticker": ticker, "count": count, "price" : price, "buy" : buy}
+        
     else:
         now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
         price = requests.get("https://finnhub.io/api/v1/quote?symbol=%s&token=cb6avbiad3i70tu62u4g" % (ticker.upper())).json()['c']
@@ -61,16 +64,24 @@ def historyHelper(user, ticker, count, buy):
 @api_view(['POST'])
 def buyShares(request, ticker, count):
     user = request.user
+    shares = user.share_set.all()
     call = requests.get(
         "https://finnhub.io/api/v1/quote?symbol=%s&token=cb6avbiad3i70tu62u4g" % (ticker.upper()))
     cost = call.json()['c'] * count
     if cost <= user.balance:
-        Share.objects.create(user=user, ticker=ticker, count=count)
-        print('success')
-        user.balance = user.balance - cost
-        historyHelper(user, ticker, count, True)
-        user.save()
-        return Response(user.balance)
+        existance = shares.filter(ticker__exact=ticker.upper())
+        if existance:
+            id = shares.filter(ticker__exact=ticker.upper())[0].id
+            share = Share.objects.get(id=id)
+            share.count = share.count + count
+            share.save(update_fields = ['count'])
+            return Response(user.balance)
+        else:  
+            Share.objects.create(user=user, ticker=ticker, count=count)
+            user.balance = user.balance - cost
+            historyHelper(user, ticker, count, True)
+            user.save()
+            return Response(user.balance)
     else:
         return Response(4)
 
@@ -128,3 +139,27 @@ def getAccount(request):
 def getHistory(request):
     user = request.user
     return Response(user.order_history)
+
+@api_view(['GET'])
+def getBalances(request):
+    user = request.user
+    return Response(user.balance_history)
+
+@api_view(['GET', 'POST', 'UPDATE'])
+def editBalances(request):
+    user = request.user
+    print('ran')
+    balance_history = user.balance_history
+    if user.balance_history == None:
+        now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        balance = user.balance
+        user.balance_history = {now : balance}
+        user.save(update_fields = ['balance_history'])
+        return Response(1)
+    else:
+        now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        balance = user.balance
+        balance_history[now] = balance
+        user.save()
+        return Response(1)
+

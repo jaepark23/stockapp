@@ -11,9 +11,9 @@ const HomePage = () => {
   let { authTokens, user } = useContext(AuthContext);
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid container-nav">
       <div className="row">
-        <div className="col-md-2 px-1 position-fixed" id="sidebar">
+        <div className="col-md-2 px-0 position-fixed" id="sidebar">
           <SideBar />
         </div>
         <div className="col-md-10 offset-2" id="main">

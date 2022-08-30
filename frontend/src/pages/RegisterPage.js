@@ -5,7 +5,7 @@ function RegisterPage() {
   let { registerUser } = useContext(AuthContext);
 
   return (
-    <div className="container">
+    <div className="container-fluid container-nav">
       <form onSubmit={registerUser}>
         <input type="text" name="username" placeholder="enter username" />
         <input type="password" name="password" placeholder="enter password" />

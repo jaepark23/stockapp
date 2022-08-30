@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import AuthContext from "../context/AuthContext";
 import OrderHistory from "../components/OrderHistory";
 import SideBar from "../components/SideBar";
-import Search from "../components/Search";
-function TradePage() {
+import AuthContext from "../context/AuthContext";
+function HistoryPage() {
   let { authTokens } = useContext(AuthContext);
   const [history, setHistory] = useState({});
 
@@ -24,26 +23,22 @@ function TradePage() {
     console.log("yes");
     console.log(history);
   }, [authTokens]);
-
   return (
-    <div className="container-fluid">
+    <div className="container-fluid container-nav ">
       <div className="row">
-        <div className="col-md-2 px-1 position-fixed" id="sidebar">
+        <div className="col-md-2 px-0 position-fixed" id="sidebar">
           <SideBar />
         </div>
         <div className="col-md-10 offset-2" id="main">
           <div className="padding-top"></div>
-          <div className="row">
-            <Search />
-          </div>
-          <div className="padding-between"></div>
-          <div className="row">
+          <div className = "row">
             <OrderHistory orders={history} />
-          </div>
+            </div>
+          <div className="padding-between"></div>
         </div>
       </div>
     </div>
   );
 }
 
-export default TradePage;
+export default HistoryPage;

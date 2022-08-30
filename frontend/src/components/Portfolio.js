@@ -15,19 +15,20 @@ function Portfolio({}) {
 
   return (
     <div className="col-md-7">
-      <div className="card border-primary mb-3">
+      <div className="card text-dark border-primary mb-3" style = {{backgroundColor: '#E0E0E0'}}>
       <div class="card-header"> 
-        <h3> Portfolio </h3>
+        <h3 className = 'roboto' style={{fontWeight: 'bold'}}> Portfolio </h3>
         {/* <h3> ${balance} ${spendingBalance} </h3> */}
       </div>
       <div className="table-wrapper">
+        
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">Count</th>
-              <th scope="col">Ticker</th>
-              <th scope="col">Price</th>
-              <th scope="col">Graph</th>
+              <th scope="col" className = 'roboto'>Count</th>
+              <th scope="col" className = 'roboto'>Ticker</th>
+              <th scope="col" className = 'roboto'>Price</th>
+              <th scope="col" className = 'roboto'>Graph</th>
             </tr>
           </thead>
           <tbody>

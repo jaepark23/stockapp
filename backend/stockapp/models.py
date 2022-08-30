@@ -10,6 +10,7 @@ from django.contrib import admin
 class User(AbstractUser):
     balance = models.IntegerField(null=True)
     order_history = models.JSONField(null = True)
+    balance_history = models.JSONField(null = True)
 
 class Share(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

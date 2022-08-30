@@ -183,3 +183,9 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'Token',
 }
 
+
+# https://realpython.com/asynchronous-tasks-with-django-and-celery/
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_TIMEZONE = "America/Chicago"
+

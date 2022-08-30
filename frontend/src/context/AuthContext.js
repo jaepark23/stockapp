@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const AuthContext = createContext();
-
+const API_KEY = 'cb6avbiad3i70tu62u4g'
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
   const [shares, setShares] = useState([]);
   const [balance, setBalance] = useState(0);
   const [spendingBalance, setSpendingBalance] = useState(0);
+  const [growth, setGrowth] = useState(0);
+
   let [authTokens, setAuthTokens] = useState(() =>
     localStorage.getItem("authTokens")
       ? JSON.parse(localStorage.getItem("authTokens"))
@@ -40,9 +42,12 @@ export const AuthProvider = ({ children }) => {
     let data = await response.json();
 
     if (response.status === 200) {
+      var local_auth = data.access
       setAuthTokens(data);
       setUser(jwt_decode(data.access));
       localStorage.setItem("authTokens", JSON.stringify(data));
+      editBalances(local_auth)
+      calculateGrowth(local_auth)
       history("/");
     } else {
       alert("Something went wrong");
@@ -50,6 +55,7 @@ export const AuthProvider = ({ children }) => {
   };
   let handleTrade = (e) => {
     e.preventDefault()
+
     if(e.target.trade[0].checked) {
       buyShare(e);
     } else {
@@ -57,6 +63,8 @@ export const AuthProvider = ({ children }) => {
 
     }
   }
+
+
   let logoutUser = () => {
     setAuthTokens(null);
     setUser(null);
@@ -176,11 +184,28 @@ export const AuthProvider = ({ children }) => {
                 Math.round(response.data["c"] * 100) / 100
               )
             )
-        );
-        setBalance(counter);
+        ); 
       }
+      setBalance(counter);
     }
   };
+
+  let calculateGrowth = async(auth) => {
+    if(authTokens) {
+    let response = await fetch('http://127.0.0.1:8000/api/account/balances', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(auth),
+      },
+    });
+    let data = await response.json()
+    var latest = data[Object.keys(data)[Object.keys(data).length - 1]]
+    var percent_change = (balance / latest) * 100
+    setGrowth(percent_change)
+  }
+  }
+
   // getBalance is for account balance
   let getBalance = async () => {
     if (authTokens) {
@@ -193,8 +218,22 @@ export const AuthProvider = ({ children }) => {
       });
       let data = await response.json();
       setSpendingBalance(data.balance); 
+      return data.balance
     }
   };
+
+
+  let editBalances = async(auth) => {
+    let response = await fetch('http://127.0.0.1:8000/api/account/balances/edit', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + String(auth),
+      },
+    })
+    let data = await response.json();
+    return data;
+  }
 
   let getHistory = async () => {
     let response = await fetch("http://127.0.0.1:8000/api/account/history",{
@@ -208,6 +247,8 @@ export const AuthProvider = ({ children }) => {
     return data;
 }
 
+
+
   let contextData = {
     user: user,
     authTokens: authTokens,
@@ -215,13 +256,15 @@ export const AuthProvider = ({ children }) => {
     balance: balance,
     prices: prices,
     spendingBalance: spendingBalance,
+    growth: growth,
     loginUser: loginUser,
     logoutUser: logoutUser,
     registerUser: registerUser,
     sellShare: sellShare,
     buyShare: buyShare,
     getHistory: getHistory,
-    handleTrade: handleTrade
+    handleTrade: handleTrade,
+    calculateGrowth: calculateGrowth
   };
   // refresh token every 4 minutes
   useEffect(() => {
