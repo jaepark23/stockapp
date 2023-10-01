@@ -6,6 +6,8 @@ import Search from "../components/Search";
 import Portfolio from "../components/Portfolio";
 import BalanceCard from "../components/BalanceCard";
 import Trade from "../components/Trade"
+import TopBar from "../components/TopBar"
+
 const HomePage = () => {
   let [shares, setShares] = useState([]);
   let { authTokens, user } = useContext(AuthContext);
@@ -13,10 +15,8 @@ const HomePage = () => {
   return (
     <div className="container-fluid container-nav">
       <div className="row">
-        <div className="col-md-2 px-0 position-fixed" id="sidebar">
-          <SideBar />
-        </div>
-        <div className="col-md-10 offset-2" id="main">
+        <TopBar />
+        <div className="col-md-12" id="main">
           <div className="padding-top"></div>
           <div className="row">
             <Portfolio shares={shares} />

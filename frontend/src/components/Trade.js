@@ -6,26 +6,26 @@ function Trade() {
   const [buy, setBuy] = useState(true);
   return (
     <div className="col-md-5">
-      
-        <div className="card border-primary mb-3" style = {{backgroundColor: '#E0E0E0'}}>
-          <div className="card-header">
-            <h3 className = 'roboto' style={{fontWeight: 'bold'}}> Trade </h3>
-          </div>
-          <div className="row">
+
+      <div className="card border-primary mb-3" style={{ backgroundColor: '#E0E0E0' }}>
+        <div className="card-header">
+          <h3 className='roboto' style={{ fontWeight: 'bold' }}> Trade </h3>
+        </div>
+        <div className="row">
           <div className="trade-wrapper">
             <form onSubmit={handleTrade}>
               <div class="input-group mb-3">
                 <span class="input-group-text roboto">Ticker</span>
                 <input type="text" class="form-control" id="ticker"></input>
               </div>
-              <div class="input-group mb-3">
+              <div class="input-group mb-2">
                 <span class="input-group-text roboto">Count</span>
                 <input type="text" class="form-control" id="count"></input>
               </div>
-      
+
               <button
                 type="submit"
-                className=" m-1 btn btn-primary btn-sm roboto"
+                className=" ms-2 btn btn-primary btn-sm roboto"
               >
                 Order
               </button>
