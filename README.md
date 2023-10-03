@@ -10,3 +10,6 @@
 - Buy and sell stocks in nearly real time
 - Look at previous stock data and graphs
 - Order history
+
+## Usage
+- I don't feel like hosting it
