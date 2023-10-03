@@ -2,21 +2,23 @@ import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/AuthContext";
 import Graph from "./Graph";
 import axios from "axios"
-const API_KEY = 'cb6avbiad3i70tu62u4g'
-function Search( {handleSearch, ticker, length, quote}) {
+
+const API_KEY = process.env.REACT_APP_API_KEY
+
+function Search({ handleSearch, ticker, length, quote }) {
   const [start, setStart] = useState('')
   const [end, setEnd] = useState('')
   const [companyInfo, setCompanyInfo] = useState({})
-  
+
   function getBusinessDates() {
-    if(length === 1) {
+    if (length === 1) {
       var startDate = new Date()
       Date.parse(startDate.setDate(startDate.getDate() - length))
       var endDate = new Date()
 
-      while(true) {
+      while (true) {
         var weekDay = endDate.getDay()
-        if(weekDay != 0 && weekDay != 6) { // not a weekend
+        if (weekDay != 0 && weekDay != 6) { // not a weekend
           break;
         }
         else {
@@ -32,18 +34,18 @@ function Search( {handleSearch, ticker, length, quote}) {
     }
     return [startDate, endDate]
   }
-  
+
   useEffect(() => {
     console.log('comapnyInfo: ' + companyInfo)
     axios
-    .get(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${API_KEY}`)
-    .then(function (response) {
-      if(Object.keys(response.data).length === 0 && ticker.length > 0) {
-        setCompanyInfo({'nothing': 1})
-      }else {
-        setCompanyInfo(response.data)
-      }
-    });
+      .get(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${API_KEY}`)
+      .then(function (response) {
+        if (Object.keys(response.data).length === 0 && ticker.length > 0) {
+          setCompanyInfo({ 'nothing': 1 })
+        } else {
+          setCompanyInfo(response.data)
+        }
+      });
   }, [ticker])
   return (
     <div className="col-md-12" id="graph-col">
@@ -56,16 +58,16 @@ function Search( {handleSearch, ticker, length, quote}) {
         }}
       >
         <div class="card-header">
-          <h3 className = 'roboto' style={{fontWeight: 'bold'}}> Graph & Info </h3>
+          <h3 className='roboto' style={{ fontWeight: 'bold' }}> Graph & Info </h3>
         </div>
         <div className="row">
           <form onSubmit={handleSearch}>
-              {Object.keys(companyInfo).length > 1 && <p className = "fs-3 ps-2 pt-3 roboto" > {companyInfo['name']} ({companyInfo['country']}) </p>}
-              {Object.keys(companyInfo).length === 1 && <p className = "fs-3 ps-2 pt-3 roboto" > {ticker.toUpperCase()} </p> }
-              {Object.keys(quote).length > 0 && <p className = "fs-4 ps-2 roboto" id = 'percent' > ${quote['c']}</p>}
-              {quote['dp'] < 0 && <p className = "fs-6 text-danger" id = 'percent' > ({quote['dp']}%) </p>}
-              {quote['dp'] > 0 && <p className = "fs-6 text-primary" id = 'percent'> ({quote['dp']}%) </p>}
-            {ticker && <Graph ticker={ticker} length={length} getBusinessDates = {getBusinessDates} />}
+            {Object.keys(companyInfo).length > 1 && <p className="fs-3 ps-2 pt-3 roboto" > {companyInfo['name']} ({companyInfo['country']}) </p>}
+            {Object.keys(companyInfo).length === 1 && <p className="fs-3 ps-2 pt-3 roboto" > {ticker.toUpperCase()} </p>}
+            {Object.keys(quote).length > 0 && <p className="fs-4 ps-2 roboto" id='percent' > ${quote['c']}</p>}
+            {quote['dp'] < 0 && <p className="fs-6 text-danger" id='percent' > ({quote['dp']}%) </p>}
+            {quote['dp'] > 0 && <p className="fs-6 text-primary" id='percent'> ({quote['dp']}%) </p>}
+            {ticker && <Graph ticker={ticker} length={length} getBusinessDates={getBusinessDates} />}
             <div className="row g-3 align-items-center">
               <div className="col-auto">
                 <label htmlFor="InputTicker" className="col-form-label ps-2 roboto">
@@ -145,6 +147,7 @@ function Search( {handleSearch, ticker, length, quote}) {
             </button>
           </form>
         </div>
+
       </div>
     </div>
   );

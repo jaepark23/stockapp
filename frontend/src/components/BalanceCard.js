@@ -6,25 +6,25 @@ function BalanceInfo() {
 
   return (
     <div className="col-md-7 ">
-      <div className="card border-primary mb-3" style = {{backgroundColor: '#E0E0E0'}}>
+      <div className="card border-primary" style={{ backgroundColor: '#E0E0E0' }}>
         <div class="card-header" >
-          <h3 className = 'roboto' style={{fontWeight: 'bold'}}> Balance Information </h3>
+          <h3 className='roboto' style={{ fontWeight: 'bold' }}> Balance Information </h3>
         </div>
         <div className="balance-wrapper">
           <div className="row ">
             <div className="col-md-6 text-center">
-              <b className = "roboto"> Stock Balance </b>
-              <h3 className = "roboto"> ${balance} </h3>
+              <b className="roboto"> Stock Balance </b>
+              <h3 className="roboto"> ${balance} </h3>
             </div>
             <div className="col-md-6 text-center">
-            <b className = "roboto"> Account Balance </b>
-              <h3 className = "roboto"> ${spendingBalance} </h3>
+              <b className="roboto"> Account Balance </b>
+              <h3 className="roboto"> ${spendingBalance} </h3>
             </div>
           </div>
           <div className="row">
             <div className="col-md-6 text-center">
-            <b className = "roboto"> Today's Growth </b>
-              <h3 className = "roboto"> {growth}% </h3>
+              <b className="roboto"> Today's Growth </b>
+              <h3 className="roboto"> {growth}% </h3>
             </div>
           </div>
         </div>

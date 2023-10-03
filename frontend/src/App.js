@@ -21,8 +21,8 @@ function App() {
           <Route element={<HomePage />} path="/" />
           <Route element={<RegisterPage />} path="/register" />
           <Route element={<LoginPage />} path="/login" />
-          <Route element = {<HistoryPage />} path = "/history" />
-          <Route element = {<ResearchPage />} path = "/research" />
+          <Route element={<HistoryPage />} path="/history" />
+          <Route element={<ResearchPage />} path="/research" />
         </Routes>
       </AuthProvider>
     </Router>

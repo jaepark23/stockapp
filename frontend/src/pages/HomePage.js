@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, Fragment } from "react";
 import AuthContext from "../context/AuthContext";
 import SideBar from "../components/SideBar";
 import News from "../components/News";
@@ -13,22 +13,22 @@ const HomePage = () => {
   let { authTokens, user } = useContext(AuthContext);
 
   return (
-    <div className="container-fluid container-nav">
+    <div className="container-fluid container-nav" id="homepage">
       <div className="row">
         <TopBar />
-        <div className="col-md-12" id="main">
-          <div className="padding-top"></div>
-          <div className="row">
-            <Portfolio shares={shares} />
-            <News />
-          </div>
-          <div className="padding-between"></div>
-          <div className="row">
-            <BalanceCard />
-            <Trade />
-          </div>
-        </div>
       </div>
+      <div className="padding-top"></div>
+      <main class>
+        <div className="row">
+          <Portfolio shares={shares} />
+          <News />
+        </div>
+        <div className="padding-between"></div>
+        <div className="row">
+          <BalanceCard />
+          <Trade />
+        </div>
+      </main>
     </div>
   );
 };

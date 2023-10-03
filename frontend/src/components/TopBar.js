@@ -10,10 +10,9 @@ function TopBar() {
 
     return (
         <nav class="navbar">
-
             <ul class="nav">
                 <li class="nav-item">
-                    <a id="logo" href="">Stock Simulator</a>
+                    <a id="logo" href="" className="roboto">Stock Simulator</a>
                 </li>
                 <li class="nav-item">
                     <Link to="/" className='roboto'> Home </Link>
@@ -24,9 +23,10 @@ function TopBar() {
                 <li class="nav-item">
                     <Link to="/history" className='roboto'> Order History </Link>
                 </li>
-                <li class="nav-item">
-
-                    {user && <a id="myLink" title="Logout"
+            </ul>
+            <ul className="nav navbar-nav navbar-right">
+                <li className="nav-item">
+                    {user && <a id="myLink" title="Logout" className="roboto"
                         href="" onClick={logoutUser}>Logout</a>}
                 </li>
             </ul>

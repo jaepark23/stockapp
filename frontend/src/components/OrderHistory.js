@@ -24,7 +24,7 @@ function OrderHistory({ orders }) {
               </tr>
             </thead>
             <tbody>
-              {user &&
+              {orders &&
                 Object.entries(orders).map(([time, data]) => {
                   return <Order time={time} order={data} />;
                 })}

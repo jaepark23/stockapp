@@ -4,6 +4,8 @@ import { Chart as ChartJS } from "chart.js/auto";
 import { Chart } from "react-chartjs-2";
 import axios from "axios";
 
+const API_KEY = process.env.REACT_APP_API_KEY
+
 function Share({ share, price }) {
   const [xValues, setXValues] = useState("");
   const [yValues, setYValues] = useState("");
@@ -11,9 +13,9 @@ function Share({ share, price }) {
     var startDate = new Date()
     Date.parse(startDate.setDate(startDate.getDate() - 1))
     var endDate = new Date()
-    while(true) {
+    while (true) {
       var weekDay = endDate.getDay()
-      if(weekDay != 0 && weekDay != 6) { // not a weekend
+      if (weekDay != 0 && weekDay != 6) { // not a weekend
         break;
       }
       else {
@@ -56,7 +58,7 @@ function Share({ share, price }) {
     var [startDate, endDate] = getBusinessDates();
     axios
       .get(
-        `https://finnhub.io/api/v1/stock/candle?symbol=${share.ticker}&resolution=60&from=${startDate}&to=${endDate}&token=cb6avbiad3i70tu62u4g`
+        `https://finnhub.io/api/v1/stock/candle?symbol=${share.ticker}&resolution=60&from=${startDate}&to=${endDate}&token=${API_KEY}`
       )
       .then(function (response) {
         convertUnix(response.data["t"]);
@@ -88,9 +90,9 @@ function Share({ share, price }) {
 
   return (
     <tr>
-      <td className = 'roboto'> {share.count} </td>
-      <td className = 'roboto'>{share.ticker}</td>
-      <td className = 'roboto'>${price}</td>
+      <td className='roboto'> {share.count} </td>
+      <td className='roboto'>{share.ticker}</td>
+      <td className='roboto'>${price}</td>
       <td>
         <div style={{ width: "5vw", height: "3vh" }}>
           {" "}
